@@ -72,6 +72,29 @@ $env:NAMESILO_DELAY="00:03:00"
 dotnet run
 ```
 
+#### Run (docker-compose)
+
+* 新建`.env`文件
+
+```
+cat .env
+```
+
+* 示例环境变量信息（根据实际情况修改参数）
+
+```
+NAMESILO_DOMAIN=example.com
+NAMESILO_HOST=blog
+NAMESILO_APIKEY=YourNameSiloAPIKey
+NAMESILO_DELAY=00:01:00
+```
+
+* 一键部署脚本
+
+```
+docker-compose up -d
+```
+
 ## Contributing
 
 1. Fork the Project

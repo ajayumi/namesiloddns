@@ -1,0 +1,14 @@
+version: '3.6'
+
+services:
+
+  app:
+    build: .
+    image: ajayumi/namesiloddns:1.0
+    restart: always
+    environment: 
+      - NAMESILO_DOMAIN=${NAMESILO_DOMAIN}
+      - NAMESILO_HOST=${NAMESILO_HOST}
+      - NAMESILO_APIKEY=${NAMESILO_APIKEY}
+      - NAMESILO_DELAY=${NAMESILO_DELAY}
+
