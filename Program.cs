@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace namesilo
@@ -15,9 +16,33 @@ namespace namesilo
 
         static string GetMyApi()
         {
-            var client = new HttpClient();
-            var response = client.GetAsync("https://myexternalip.com/raw").Result;
-            return response.Content.ReadAsStringAsync().Result;
+            //var client = new HttpClient();
+            //var response = client.GetAsync("https://myexternalip.com/raw").Result;
+            //return response.Content.ReadAsStringAsync().Result;
+
+            string ip = string.Empty;
+
+            using (var client = new HttpClient())
+            {
+                var response = client.GetAsync("https://icanhazip.com/").GetAwaiter().GetResult();
+                ip = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                if (!string.IsNullOrEmpty(ip))
+                {
+                    ip = ip.Trim('\r', '\n');
+                }
+            }
+            return ip;
+        }
+
+        static async Task<(bool Success, string IpAddress)> LookupPublicIpAsync(HttpClient httpClient, string ipProviderUrl)
+        {
+            using var publicIpEchoResponse = await httpClient.GetAsync(ipProviderUrl);
+            if (publicIpEchoResponse.IsSuccessStatusCode)
+            {
+                var ipAddress = await publicIpEchoResponse.Content.ReadAsStringAsync();
+                return (true, ipAddress.Trim());
+            }
+            return (false, null);
         }
 
         public class Record
@@ -110,9 +135,9 @@ namespace namesilo
 
             // DEBUGGING
             /*
-            Environment.SetEnvironmentVariable(domainVariableName,  "example.org");
-            Environment.SetEnvironmentVariable(hostVariableName,  "subdomain");
-            Environment.SetEnvironmentVariable(apiKeyVariableName,  "<your api key>");
+            Environment.SetEnvironmentVariable(domainVariableName, "example.org");
+            Environment.SetEnvironmentVariable(hostVariableName, "subdomain");
+            Environment.SetEnvironmentVariable(apiKeyVariableName, "<your api key>");
             */
             // END
 
