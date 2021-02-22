@@ -179,6 +179,13 @@ namespace namesilo
                     var expectedIp = GetMyApi();
                     Console.WriteLine("IP: " + expectedIp);
 
+                    if (string.IsNullOrEmpty(expectedIp))
+                    {
+                        Console.Error.WriteLine($"获取公网IP失败");
+                        Thread.Sleep(delay); 
+                        continue;
+                    }
+
                     var record = GetCurrentRecord();
                     Console.WriteLine("Current IP: " + record.IP);
 
