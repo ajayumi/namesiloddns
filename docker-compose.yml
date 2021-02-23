@@ -2,13 +2,23 @@ version: '3.6'
 
 services:
 
-  app:
+  app1:
     build: .
     image: ajayumi/namesiloddns:1.0
     restart: always
     environment: 
       - NAMESILO_DOMAIN=${NAMESILO_DOMAIN}
-      - NAMESILO_HOST=${NAMESILO_HOST}
+      - NAMESILO_HOST=${NAMESILO_HOST1}
+      - NAMESILO_APIKEY=${NAMESILO_APIKEY}
+      - NAMESILO_DELAY=${NAMESILO_DELAY}
+      
+  app2:
+    build: .
+    image: ajayumi/namesiloddns:1.0
+    restart: always
+    environment: 
+      - NAMESILO_DOMAIN=${NAMESILO_DOMAIN}
+      - NAMESILO_HOST=${NAMESILO_HOST2}
       - NAMESILO_APIKEY=${NAMESILO_APIKEY}
       - NAMESILO_DELAY=${NAMESILO_DELAY}
 
