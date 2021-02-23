@@ -24,7 +24,11 @@ namespace namesilo
 
             using (var client = new HttpClient())
             {
-                var response = client.GetAsync("https://icanhazip.com/").GetAwaiter().GetResult();
+                var response = client.GetAsync("http://whatismyip.akamai.com/").GetAwaiter().GetResult();
+                if (!response.IsSuccessStatusCode)
+                {
+                    return ip;
+                }
                 ip = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                 if (!string.IsNullOrEmpty(ip))
                 {
@@ -134,21 +138,21 @@ namespace namesilo
             const string delayKeyVariableName = "NAMESILO_DELAY";
 
             // DEBUGGING
-            /*
-            Environment.SetEnvironmentVariable(domainVariableName, "example.org");
-            Environment.SetEnvironmentVariable(hostVariableName, "subdomain");
-            Environment.SetEnvironmentVariable(apiKeyVariableName, "<your api key>");
-            */
+
+            Environment.SetEnvironmentVariable(domainVariableName, "aimeitu.top");
+            Environment.SetEnvironmentVariable(hostVariableName, "www");
+            Environment.SetEnvironmentVariable(apiKeyVariableName, "e6fe23c1b04363e36348ef27");
+
             // END
 
-            // PrintEnvVariables(Console.Out);
+            PrintEnvVariables(Console.Out);
 
             DOMAIN = Environment.GetEnvironmentVariable(domainVariableName);
             HOST = Environment.GetEnvironmentVariable(hostVariableName);
             APIKEY = Environment.GetEnvironmentVariable(apiKeyVariableName);
 
             var delayString = Environment.GetEnvironmentVariable(delayKeyVariableName, EnvironmentVariableTarget.Process);
-            var delay = TimeSpan.FromMinutes(5);
+            var delay = TimeSpan.FromMinutes(1);
 
             if (string.IsNullOrEmpty(DOMAIN))
             {
@@ -182,7 +186,7 @@ namespace namesilo
                     if (string.IsNullOrEmpty(expectedIp))
                     {
                         Console.Error.WriteLine($"获取公网IP失败");
-                        Thread.Sleep(delay); 
+                        Thread.Sleep(delay);
                         continue;
                     }
 
